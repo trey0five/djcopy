@@ -9,8 +9,8 @@ const EMOJI = ['❤️', '👍', '💬', '✨', '🔥', '💯', '😍', '⭐', '
 const PARTICLES = 44
 
 // Skip after this long even if animation hangs. Tap also skips.
-const AUTO_DISMISS_MS = 3200
-const EXPLOSION_AT_MS = 1100
+const AUTO_DISMISS_MS = 4000
+const EXPLOSION_AT_MS = 1900
 
 export default function Splash({ onDone }) {
   const [visible, setVisible] = useState(true)
@@ -49,7 +49,13 @@ export default function Splash({ onDone }) {
       {visible && (
         <motion.div
           key="splash"
-          className="fixed inset-0 z-[200] bg-black grid place-items-center cursor-pointer select-none overflow-hidden"
+          className="fixed inset-0 z-[200] grid place-items-center cursor-pointer select-none overflow-hidden"
+          style={{
+            // Same gradient family as the hero section so the splash feels
+            // like the site's own intro, not a separate screen.
+            background:
+              'linear-gradient(135deg, #FF5EEB 0%, #7C3AED 45%, #0EA5E9 100%)'
+          }}
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}

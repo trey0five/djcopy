@@ -28,7 +28,7 @@ const POSTS = [
   {
     kind: 'reel',
     positions: {
-      base: { top: '16%', right: '2%' },
+      base: { top: '28%', right: '2%' },
       lg: { top: '14%', right: '6%' }
     },
     rotate: 4,
@@ -53,7 +53,7 @@ const POSTS = [
   {
     kind: 'tiktok',
     positions: {
-      base: { top: '26%', left: '2%' },
+      base: { top: '38%', left: '2%' },
       lg: { top: '22%', left: '4%' }
     },
     rotate: -6,
