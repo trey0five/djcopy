@@ -65,7 +65,7 @@ export default function Section({ data, index, children }) {
       className="snap-section grain"
       style={{ background: data.bg }}
     >
-      {!isMobile && data.particles && data.particles !== 'none' && (
+      {data.particles && data.particles !== 'none' && (
         <Particles type={data.particles} color={data.accent} active={inView} />
       )}
 
@@ -100,24 +100,17 @@ export default function Section({ data, index, children }) {
         }}
       />
 
-      {/* Diagonal curtain wipe — desktop only. On mobile Safari the
-          full-section transform stutters against scroll-snap, so the
-          curtain is simply not rendered there. */}
-      {!isMobile && (
-        <motion.div
-          aria-hidden
-          className="absolute inset-0 z-20"
-          style={{
-            background: data.accent,
-            willChange: 'transform',
-            transform: 'translateZ(0)',
-            backfaceVisibility: 'hidden'
-          }}
-          initial={curtainFrom}
-          animate={inView ? curtainTo : curtainFrom}
-          transition={{ duration: 0.5, ease: [0.77, 0, 0.175, 1] }}
-        />
-      )}
+      {/* Diagonal curtain wipe. CSS-transition driven (not framer-motion) so
+          the transform lives on the compositor and doesn't compete with
+          mobile Safari's scroll pipeline on the main thread. */}
+      <div
+        aria-hidden
+        className={`section-curtain ${inView ? 'section-curtain--out' : ''}`}
+        style={{
+          background: data.accent,
+          ['--curtain-x']: even ? '120%' : '-120%'
+        }}
+      />
 
       <motion.div
         className={`relative z-30 h-full w-full flex flex-col ${

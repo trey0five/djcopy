@@ -29,6 +29,22 @@ html, body, #root {
   overflow: hidden;
 }
 
+/* Curtain wipe. Pure CSS transform transition so it runs on the compositor
+   thread — stays smooth under mobile Safari's scroll pipeline. */
+.section-curtain {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.section-curtain--out {
+  transform: translate3d(var(--curtain-x, 120%), -120%, 0);
+}
+
 /* Kill scrollbars everywhere — they show as dated chrome on mobile. */
 *::-webkit-scrollbar { width: 0; height: 0; display: none; }
 * { scrollbar-width: none; -ms-overflow-style: none; }
