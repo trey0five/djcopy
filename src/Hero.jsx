@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 
+const TITLE = 'DJ COPY'
+
 const TAGLINES = [
   'Social media that actually sounds like you.',
   'Captions that convert.',
@@ -85,6 +87,8 @@ export default function Hero({ accent }) {
     return false
   }
 
+  const letters = Array.from(TITLE)
+
   return (
     <div className="h-full w-full flex flex-col relative">
       {/* Floating social post cards — smaller + more transparent on mobile so
@@ -106,20 +110,32 @@ export default function Hero({ accent }) {
         Social studio · since 2024
       </motion.div>
 
-      {/* Title — brand logo, scaled in */}
+      {/* Title — letter-by-letter reveal */}
       <div className="mt-3 md:mt-4 flex-1 flex flex-col justify-center relative z-10">
-        <motion.img
-          src={`${import.meta.env.BASE_URL}logo.png`}
-          alt="DJ Copy — Social Media Management"
-          initial={{ opacity: 0, scale: 0.82, y: 30 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          className="block max-w-full w-auto h-auto rounded-xl md:rounded-2xl shadow-2xl"
-          style={{
-            maxHeight: 'min(46vh, 520px)',
-            filter: `drop-shadow(0 12px 48px ${accent}55) drop-shadow(0 4px 16px rgba(0,0,0,0.35))`
-          }}
-        />
+        <h1
+          aria-label={TITLE}
+          className="font-display font-black leading-[0.85] tracking-tight select-none"
+          style={{ fontSize: 'clamp(4.5rem, 19vw, 16rem)' }}
+        >
+          <span className="flex flex-wrap" aria-hidden>
+            {letters.map((ch, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, y: '40%', rotate: -6, scale: 0.85 }}
+                animate={{ opacity: 1, y: 0, rotate: 0, scale: 1 }}
+                transition={{
+                  duration: 0.7,
+                  delay: 0.25 + i * 0.08,
+                  ease: [0.22, 1, 0.36, 1]
+                }}
+                className="inline-block"
+                style={{ textShadow: `0 6px 40px ${accent}55` }}
+              >
+                {ch === ' ' ? '\u00A0' : ch}
+              </motion.span>
+            ))}
+          </span>
+        </h1>
 
         {/* Rotating tagline. Frosted-glass card on mobile only. The card
             auto-sizes to the current sentence via an invisible sizer +
