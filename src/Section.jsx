@@ -115,11 +115,11 @@ export default function Section({ data, index, children }) {
 
       <motion.div
         className={`relative z-30 h-full w-full flex flex-col ${
-          isProject ? 'pt-24 md:pt-32 pb-6 md:pb-10'
-            : isContact ? 'pt-24 md:pt-28 pb-8 md:pb-10'
-            : isStudio || isResults ? 'pt-24 md:pt-32 pb-6 md:pb-10'
-            : isHero ? 'pt-24 md:pt-32 pb-6 md:pb-8'
-            : 'justify-center pt-24 md:pt-32'
+          isProject ? 'pt-24 md:pt-44 pb-6 md:pb-10'
+            : isContact ? 'pt-24 md:pt-40 pb-8 md:pb-10'
+            : isStudio || isResults ? 'pt-24 md:pt-44 pb-6 md:pb-10'
+            : isHero ? 'pt-24 md:pt-44 pb-6 md:pb-8'
+            : 'justify-center pt-24 md:pt-44'
         } px-4 md:px-14 lg:px-20`}
         initial={contentFrom}
         animate={inView ? contentTo : contentFrom}
