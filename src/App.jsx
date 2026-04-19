@@ -3,6 +3,7 @@ import { sections } from './sections'
 import { projects } from './projects'
 import Section from './Section'
 import Nav from './Nav'
+import Hero from './Hero'
 import Studio from './Studio'
 import Results from './Results'
 import Contact from './Contact'
@@ -20,6 +21,9 @@ const PROJECT_BY_LAYOUT = {
 }
 
 function renderChildren(section) {
+  if (section.kind === 'hero') {
+    return <Hero accent={section.accent} />
+  }
   if (section.kind === 'studio') {
     return <Studio accent={section.accent} />
   }

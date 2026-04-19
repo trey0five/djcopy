@@ -54,7 +54,8 @@ export default function Section({ data, index, children }) {
   const isStudio = data.kind === 'studio'
   const isContact = data.kind === 'contact'
   const isResults = data.kind === 'results'
-  const isCompactContent = isStudio || isContact || isResults
+  const isHero = data.kind === 'hero'
+  const isCompactContent = isStudio || isContact || isResults || isHero
 
   return (
     <section
@@ -117,6 +118,7 @@ export default function Section({ data, index, children }) {
           isProject ? 'pt-14 md:pt-20 pb-6 md:pb-10'
             : isContact ? 'pt-14 md:pt-16 pb-8 md:pb-10'
             : isStudio || isResults ? 'pt-14 md:pt-20 pb-6 md:pb-10'
+            : isHero ? 'pt-14 md:pt-20 pb-6 md:pb-8'
             : 'justify-center pt-16 md:pt-0'
         } px-4 md:px-14 lg:px-20`}
         initial={contentFrom}
@@ -126,7 +128,7 @@ export default function Section({ data, index, children }) {
       >
         {isProject ? (
           <ProjectHeader data={data} />
-        ) : (
+        ) : isHero ? null : (
           <>
             <div
               className="font-display text-xs md:text-base tracking-[0.3em] uppercase opacity-80"
@@ -160,7 +162,7 @@ export default function Section({ data, index, children }) {
         )}
 
         {children && (
-          <div className={isProject || isContact || isResults ? 'mt-3 md:mt-4 flex-1 min-h-0' : 'mt-4 md:mt-6 w-full'}>
+          <div className={isProject || isContact || isResults || isHero ? (isHero ? 'flex-1 min-h-0' : 'mt-3 md:mt-4 flex-1 min-h-0') : 'mt-4 md:mt-6 w-full'}>
             {isProject ? (
               <div
                 className="h-full w-full rounded-xl md:rounded-2xl overflow-hidden relative border"

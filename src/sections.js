@@ -7,7 +7,7 @@
 export const sections = [
   {
     id: 'hero',
-    kind: 'content',
+    kind: 'hero',
     label: 'Home',
     eyebrow: '01 / Intro',
     title: 'DJ COPY',
