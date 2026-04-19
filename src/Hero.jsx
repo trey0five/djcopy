@@ -35,7 +35,8 @@ const POSTS = [
     handle: '@aidenr',
     platform: 'Instagram Reel',
     caption: 'The 3 things killing your close rate',
-    stat: '42.1k views · 2d'
+    stat: '42.1k views · 2d',
+    video: `${import.meta.env.BASE_URL}videos/reel.mp4`
   },
   {
     kind: 'tweet',
@@ -59,7 +60,8 @@ const POSTS = [
     handle: '@kishigallery',
     platform: 'TikTok',
     caption: 'POV: the brand trailer you thought was from a Netflix doc',
-    stat: '286k plays · trending'
+    stat: '286k plays · trending',
+    video: `${import.meta.env.BASE_URL}videos/tiktok.mp4`
   }
 ]
 
@@ -266,21 +268,21 @@ function PostCard({ post, accent, delay }) {
               background: `linear-gradient(135deg, ${accent}33, rgba(0,0,0,0.4))`
             }}
           >
-            <div className="absolute inset-0 grid place-items-center">
-              <div className="h-8 w-8 md:h-12 md:w-12 rounded-full bg-white/90 grid place-items-center">
-                <div
-                  className="w-0 h-0"
-                  style={{
-                    borderLeft: '9px solid #0b0b10',
-                    borderTop: '6px solid transparent',
-                    borderBottom: '6px solid transparent',
-                    marginLeft: '2px'
-                  }}
-                />
-              </div>
-            </div>
-            <div className="absolute bottom-1.5 left-1.5 text-[9px] md:text-[10px] font-semibold">
-              {post.stat}
+            {post.video && (
+              <video
+                src={post.video}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            )}
+            <div className="absolute bottom-1.5 left-1.5 right-1.5 text-[9px] md:text-[10px] font-semibold flex items-center justify-between z-10">
+              <span className="px-1.5 py-0.5 rounded-full bg-black/55 backdrop-blur-sm">
+                ▶ {post.stat}
+              </span>
             </div>
           </div>
         )}
@@ -303,11 +305,31 @@ function PostCard({ post, accent, delay }) {
               background: `linear-gradient(160deg, ${accent}22, rgba(0,0,0,0.5))`
             }}
           >
-            <div className="absolute bottom-1.5 left-1.5 right-1.5">
+            {post.video && (
+              <video
+                src={post.video}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            )}
+            {/* Soft overlay for caption legibility */}
+            <div
+              aria-hidden
+              className="absolute inset-x-0 bottom-0 h-16"
+              style={{
+                background:
+                  'linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0))'
+              }}
+            />
+            <div className="absolute bottom-1.5 left-1.5 right-1.5 z-10">
               <div className="text-[10px] md:text-[11px] font-semibold line-clamp-2">
                 {post.caption}
               </div>
-              <div className="mt-1 text-[8px] md:text-[9px] opacity-80">{post.stat}</div>
+              <div className="mt-1 text-[8px] md:text-[9px] opacity-90">{post.stat}</div>
             </div>
           </div>
         )}
