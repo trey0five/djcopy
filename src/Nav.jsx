@@ -38,10 +38,22 @@ export default function Nav({ containerRef }) {
 
   return (
     <>
-      <header className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-4 md:px-10 py-3 md:py-5 mix-blend-difference text-white pointer-events-none">
-        <div className="font-display font-bold tracking-[0.25em] text-xs md:text-sm pointer-events-auto">
-          DJ·COPY
-        </div>
+      <header className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-4 md:px-10 py-3 md:py-5 text-white pointer-events-none">
+        {/* Logo pill — opted out of mix-blend so the brand colours stay true
+            against every section's gradient. */}
+        <button
+          type="button"
+          onClick={() => go(0)}
+          aria-label="Home"
+          className="pointer-events-auto inline-flex items-center gap-2 rounded-full bg-black/55 backdrop-blur-sm border border-white/15 shadow-lg px-2 py-1.5 md:px-2.5 md:py-2"
+          style={{ mixBlendMode: 'normal' }}
+        >
+          <img
+            src={`${import.meta.env.BASE_URL}logo-mark.png`}
+            alt="DJ Copy"
+            className="h-5 md:h-6 w-auto block"
+          />
+        </button>
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-6 text-xs tracking-[0.2em] uppercase pointer-events-auto">
@@ -111,9 +123,11 @@ export default function Nav({ containerRef }) {
             className="fixed inset-0 z-[70] bg-black/95 backdrop-blur-md md:hidden flex flex-col"
           >
             <div className="flex items-center justify-between px-4 py-3">
-              <div className="font-display font-bold tracking-[0.25em] text-xs text-white">
-                DJ·COPY
-              </div>
+              <img
+                src={`${import.meta.env.BASE_URL}logo-mark.png`}
+                alt="DJ Copy"
+                className="h-6 w-auto block"
+              />
               <button
                 type="button"
                 aria-label="Close menu"
