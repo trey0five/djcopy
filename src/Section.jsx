@@ -1,23 +1,39 @@
 import { motion, useInView, useMotionValue, useSpring } from 'framer-motion'
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Particles from './Particles'
 
 export default function Section({ data, index, children }) {
   const ref = useRef(null)
-  // Live "is visible" signal — used to pause/resume the particle canvas so
-  // off-screen sections don't chew battery.
   const inView = useInView(ref, { amount: 0.3 })
-  // Latched "has ever been seen" — used for the curtain + content entrance
-  // so they play exactly once per session. Replaying those on every
-  // scroll-back was causing stutter in mobile Safari.
   const hasEntered = useInView(ref, { amount: 0.3, once: true })
 
-  // Alternating diagonal entrance; percentage offsets so it scales with viewport.
-  // Dropped the skewY — on mobile Safari it pairs badly with the curtain
-  // transform and caused stutter. Translate + fade is cheaper and still reads.
+  // Detect small / touch-coarse viewports once. Mobile Safari can't run the
+  // full-section curtain transform smoothly alongside scroll-snap, so we
+  // swap to a lightweight fade-only entrance there.
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== 'undefined'
+      ? window.matchMedia('(max-width: 767px), (pointer: coarse)').matches
+      : false
+  )
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px), (pointer: coarse)')
+    const onChange = (e) => setIsMobile(e.matches)
+    mq.addEventListener?.('change', onChange)
+    return () => mq.removeEventListener?.('change', onChange)
+  }, [])
+
   const even = index % 2 === 0
-  const contentFrom = { x: even ? '-15%' : '15%', y: '14%', opacity: 0 }
-  const contentTo = { x: 0, y: 0, opacity: 1 }
+
+  // On mobile, no entrance animation at all — content renders at its final
+  // state immediately. Safari's scroll-snap pipeline can't share the frame
+  // with a JS-driven transform on the same element without stutter.
+  const contentStyle = isMobile ? undefined : 'diagonal'
+  const contentFrom =
+    contentStyle === 'diagonal'
+      ? { x: even ? '-15%' : '15%', y: '14%', opacity: 0 }
+      : { opacity: 1 }
+  const contentTo =
+    contentStyle === 'diagonal' ? { x: 0, y: 0, opacity: 1 } : { opacity: 1 }
 
   const curtainFrom = { x: 0, y: 0 }
   const curtainTo = { x: even ? '120%' : '-120%', y: '-120%' }
@@ -49,7 +65,7 @@ export default function Section({ data, index, children }) {
       className="snap-section grain"
       style={{ background: data.bg }}
     >
-      {data.particles && data.particles !== 'none' && (
+      {!isMobile && data.particles && data.particles !== 'none' && (
         <Particles type={data.particles} color={data.accent} active={inView} />
       )}
 
@@ -84,22 +100,24 @@ export default function Section({ data, index, children }) {
         }}
       />
 
-      {/* Diagonal curtain wipe. Promoted to its own compositor layer via
-          willChange + translateZ so mobile Safari can animate the
-          full-section transform on the GPU without jank. */}
-      <motion.div
-        aria-hidden
-        className="absolute inset-0 z-20"
-        style={{
-          background: data.accent,
-          willChange: 'transform',
-          transform: 'translateZ(0)',
-          backfaceVisibility: 'hidden'
-        }}
-        initial={curtainFrom}
-        animate={inView ? curtainTo : curtainFrom}
-        transition={{ duration: 0.5, ease: [0.77, 0, 0.175, 1] }}
-      />
+      {/* Diagonal curtain wipe — desktop only. On mobile Safari the
+          full-section transform stutters against scroll-snap, so the
+          curtain is simply not rendered there. */}
+      {!isMobile && (
+        <motion.div
+          aria-hidden
+          className="absolute inset-0 z-20"
+          style={{
+            background: data.accent,
+            willChange: 'transform',
+            transform: 'translateZ(0)',
+            backfaceVisibility: 'hidden'
+          }}
+          initial={curtainFrom}
+          animate={inView ? curtainTo : curtainFrom}
+          transition={{ duration: 0.5, ease: [0.77, 0, 0.175, 1] }}
+        />
+      )}
 
       <motion.div
         className={`relative z-30 h-full w-full flex flex-col ${
@@ -111,7 +129,7 @@ export default function Section({ data, index, children }) {
         initial={contentFrom}
         animate={inView ? contentTo : contentFrom}
         transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
-        style={{ willChange: 'transform, opacity' }}
+        style={isMobile ? undefined : { willChange: 'transform, opacity' }}
       >
         {isProject ? (
           <ProjectHeader data={data} />

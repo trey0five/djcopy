@@ -18,9 +18,6 @@ html, body, #root {
   height: 100%;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
-  /* No scroll-behavior: smooth — native snap is much snappier, especially on
-     mobile. Nav button clicks still animate because they pass
-     behavior: 'smooth' explicitly to scrollTo(). */
   -webkit-overflow-scrolling: touch;
 }
 
