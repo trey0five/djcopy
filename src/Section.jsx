@@ -49,15 +49,15 @@ export default function Section({ data, index, children }) {
         aria-hidden
         className="absolute -top-32 -right-32 h-[380px] w-[380px] md:h-[520px] md:w-[520px] rounded-full blur-3xl opacity-40"
         style={{ background: data.accent }}
-        animate={inView ? { scale: [0.8, 1.1, 1], rotate: [0, 20, 0] } : { scale: 0.8 }}
-        transition={{ duration: 2.4, ease: 'easeInOut' }}
+        animate={inView ? { scale: 1 } : { scale: 0.85 }}
+        transition={{ duration: 0.7, ease: 'easeOut' }}
       />
       <motion.div
         aria-hidden
         className="absolute -bottom-40 -left-24 h-[320px] w-[320px] md:h-[420px] md:w-[420px] rounded-full blur-3xl opacity-30"
         style={{ background: data.accent }}
-        animate={inView ? { scale: [0.9, 1.15, 1], rotate: [0, -15, 0] } : { scale: 0.9 }}
-        transition={{ duration: 2.8, ease: 'easeInOut', delay: 0.2 }}
+        animate={inView ? { scale: 1 } : { scale: 0.9 }}
+        transition={{ duration: 0.8, ease: 'easeOut', delay: 0.1 }}
       />
 
       {/* Cursor spotlight — desktop only */}
@@ -83,7 +83,7 @@ export default function Section({ data, index, children }) {
         style={{ background: data.accent }}
         initial={curtainFrom}
         animate={inView ? curtainTo : curtainFrom}
-        transition={{ duration: 1.1, ease: [0.77, 0, 0.175, 1] }}
+        transition={{ duration: 0.55, ease: [0.77, 0, 0.175, 1] }}
       />
 
       <motion.div
@@ -95,7 +95,7 @@ export default function Section({ data, index, children }) {
         } px-4 md:px-14 lg:px-20`}
         initial={contentFrom}
         animate={inView ? contentTo : contentFrom}
-        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
       >
         {isProject ? (
           <ProjectHeader data={data} />
