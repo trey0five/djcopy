@@ -13,9 +13,11 @@ export default function Section({ data, index, children }) {
   const hasEntered = useInView(ref, { amount: 0.3, once: true })
 
   // Alternating diagonal entrance; percentage offsets so it scales with viewport.
+  // Dropped the skewY — on mobile Safari it pairs badly with the curtain
+  // transform and caused stutter. Translate + fade is cheaper and still reads.
   const even = index % 2 === 0
-  const contentFrom = { x: even ? '-20%' : '20%', y: '18%', skewY: even ? 4 : -4, opacity: 0 }
-  const contentTo = { x: 0, y: 0, skewY: 0, opacity: 1 }
+  const contentFrom = { x: even ? '-15%' : '15%', y: '14%', opacity: 0 }
+  const contentTo = { x: 0, y: 0, opacity: 1 }
 
   const curtainFrom = { x: 0, y: 0 }
   const curtainTo = { x: even ? '120%' : '-120%', y: '-120%' }
@@ -82,16 +84,21 @@ export default function Section({ data, index, children }) {
         }}
       />
 
-      {/* Diagonal curtain wipe — fires only on first entry so scrolling back
-          to a section doesn't re-trigger a full-screen transform (which
-          stutters under mobile Safari). */}
+      {/* Diagonal curtain wipe. Promoted to its own compositor layer via
+          willChange + translateZ so mobile Safari can animate the
+          full-section transform on the GPU without jank. */}
       <motion.div
         aria-hidden
         className="absolute inset-0 z-20"
-        style={{ background: data.accent }}
+        style={{
+          background: data.accent,
+          willChange: 'transform',
+          transform: 'translateZ(0)',
+          backfaceVisibility: 'hidden'
+        }}
         initial={curtainFrom}
-        animate={hasEntered ? curtainTo : curtainFrom}
-        transition={{ duration: 0.55, ease: [0.77, 0, 0.175, 1] }}
+        animate={inView ? curtainTo : curtainFrom}
+        transition={{ duration: 0.5, ease: [0.77, 0, 0.175, 1] }}
       />
 
       <motion.div
@@ -102,8 +109,9 @@ export default function Section({ data, index, children }) {
             : 'justify-center pt-16 md:pt-0'
         } px-4 md:px-14 lg:px-20`}
         initial={contentFrom}
-        animate={hasEntered ? contentTo : contentFrom}
-        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
+        animate={inView ? contentTo : contentFrom}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
+        style={{ willChange: 'transform, opacity' }}
       >
         {isProject ? (
           <ProjectHeader data={data} />
