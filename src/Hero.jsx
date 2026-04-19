@@ -188,24 +188,62 @@ export default function Hero({ accent }) {
         </motion.div>
       </div>
 
-      {/* Platforms marquee */}
-      <div className="relative -mx-4 md:-mx-14 lg:-mx-20 mt-6 md:mt-8 pb-2 md:pb-4 z-10">
-        <div className="relative flex overflow-hidden">
+      {/* Platforms marquee — alternating filled / outlined words so the row
+          reads like a kinetic ticker instead of a plain text strip. */}
+      <div className="relative -mx-4 md:-mx-14 lg:-mx-20 mt-6 md:mt-8 z-10">
+        <div
+          className="relative flex overflow-hidden py-3 md:py-4"
+          style={{
+            borderTop: `1px solid rgba(255,255,255,0.12)`,
+            borderBottom: `1px solid rgba(255,255,255,0.12)`,
+            background:
+              'linear-gradient(90deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0) 20%, rgba(0,0,0,0) 80%, rgba(0,0,0,0.12) 100%)'
+          }}
+        >
           <motion.div
-            className="flex shrink-0 whitespace-nowrap"
+            className="flex shrink-0 whitespace-nowrap items-center"
             animate={{ x: ['0%', '-50%'] }}
             transition={{ duration: 32, repeat: Infinity, ease: 'linear' }}
+            style={{ lineHeight: 1.4 }}
           >
-            {[...MARQUEE, ...MARQUEE].map((word, i) => (
-              <span
-                key={i}
-                className="inline-flex items-center font-display font-bold tracking-[0.25em] uppercase"
-                style={{ fontSize: 'clamp(1.4rem, 4.8vw, 2.8rem)' }}
-              >
-                <span className="px-6" style={{ color: accent }}>✦</span>
-                <span className="px-3 opacity-90">{word}</span>
-              </span>
-            ))}
+            {[...MARQUEE, ...MARQUEE].map((word, i) => {
+              const filled = i % 2 === 0
+              return (
+                <span
+                  key={i}
+                  className="inline-flex items-center font-display font-black tracking-[0.15em] uppercase"
+                  style={{ fontSize: 'clamp(1.7rem, 5.8vw, 3.2rem)' }}
+                >
+                  <span
+                    className="px-4 md:px-6"
+                    style={{
+                      color: accent,
+                      fontSize: '1.25em',
+                      filter: `drop-shadow(0 0 8px ${accent}88)`
+                    }}
+                  >
+                    ✦
+                  </span>
+                  <span
+                    className="px-3 py-[0.05em]"
+                    style={
+                      filled
+                        ? {
+                            color: accent,
+                            textShadow: `0 0 22px ${accent}77, 0 2px 10px rgba(0,0,0,0.35)`
+                          }
+                        : {
+                            color: 'transparent',
+                            WebkitTextStroke: '1.5px #ffffff',
+                            paintOrder: 'stroke fill'
+                          }
+                    }
+                  >
+                    {word}
+                  </span>
+                </span>
+              )
+            })}
           </motion.div>
         </div>
       </div>
