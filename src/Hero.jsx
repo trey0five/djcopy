@@ -110,8 +110,10 @@ export default function Hero({ accent }) {
         Social studio · since 2024
       </motion.div>
 
-      {/* Title — letter-by-letter reveal */}
-      <div className="mt-3 md:mt-4 flex-1 flex flex-col justify-center relative z-10">
+      {/* Title — letter-by-letter reveal. Anchored to top on mobile so the
+          title clears the floating Reel / TikTok post cards that sit in
+          the upper-middle zone; centered on desktop where there's room. */}
+      <div className="mt-3 md:mt-4 flex-1 flex flex-col justify-start md:justify-center relative z-10">
         <h1
           aria-label={TITLE}
           className="font-display font-black leading-[0.85] tracking-tight select-none"
