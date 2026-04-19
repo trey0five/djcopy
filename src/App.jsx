@@ -1,8 +1,9 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { sections } from './sections'
 import { projects } from './projects'
 import Section from './Section'
 import Nav from './Nav'
+import Splash from './Splash'
 import Hero from './Hero'
 import Studio from './Studio'
 import Results from './Results'
@@ -48,8 +49,10 @@ function renderChildren(section) {
 
 export default function App() {
   const containerRef = useRef(null)
+  const [splashDone, setSplashDone] = useState(false)
   return (
     <>
+      {!splashDone && <Splash onDone={() => setSplashDone(true)} />}
       <Nav containerRef={containerRef} />
       <main ref={containerRef} className="snap-container">
         {sections.map((s, i) => (
