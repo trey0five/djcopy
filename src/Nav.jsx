@@ -56,16 +56,18 @@ export default function Nav({ containerRef }) {
           ))}
         </nav>
 
-        {/* Mobile hamburger */}
+        {/* Mobile hamburger — opted out of the header's mix-blend-difference
+            so it stays legible against any section's gradient. */}
         <button
           type="button"
           aria-label="Open menu"
           onClick={() => setMenuOpen(true)}
-          className="md:hidden pointer-events-auto flex flex-col gap-[5px] p-2 -mr-2"
+          className="md:hidden pointer-events-auto flex flex-col gap-[5px] items-center justify-center h-10 w-10 rounded-full bg-black/55 backdrop-blur-sm border border-white/15 shadow-lg"
+          style={{ mixBlendMode: 'normal' }}
         >
-          <span className="h-[2px] w-6 bg-white rounded-full" />
-          <span className="h-[2px] w-6 bg-white rounded-full" />
-          <span className="h-[2px] w-6 bg-white rounded-full" />
+          <span className="h-[2px] w-5 bg-white rounded-full" />
+          <span className="h-[2px] w-5 bg-white rounded-full" />
+          <span className="h-[2px] w-5 bg-white rounded-full" />
         </button>
       </header>
 
