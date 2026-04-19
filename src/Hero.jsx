@@ -22,13 +22,15 @@ const MARQUEE = [
   'GROWTH'
 ]
 
-// Decorative mock social posts. Positioned around the title on desktop to
-// signal what DJ Copy actually makes without cluttering the message.
+// Decorative mock social posts. Positioned around the title at every size
+// (smaller + dimmer on mobile so they frame the title without stealing focus).
 const POSTS = [
   {
     kind: 'reel',
-    top: '8%',
-    right: '6%',
+    positions: {
+      base: { top: '10%', right: '2%' },
+      lg: { top: '8%', right: '6%' }
+    },
     rotate: 4,
     handle: '@aidenr',
     platform: 'Instagram Reel',
@@ -37,8 +39,10 @@ const POSTS = [
   },
   {
     kind: 'tweet',
-    bottom: '18%',
-    right: '10%',
+    positions: {
+      base: { bottom: '22%', right: '2%' },
+      lg: { bottom: '18%', right: '10%' }
+    },
     rotate: -3,
     handle: '@dj_copy',
     platform: 'X',
@@ -47,8 +51,10 @@ const POSTS = [
   },
   {
     kind: 'tiktok',
-    top: '18%',
-    left: '4%',
+    positions: {
+      base: { top: '22%', left: '2%' },
+      lg: { top: '18%', left: '4%' }
+    },
     rotate: -6,
     handle: '@kishigallery',
     platform: 'TikTok',
@@ -83,8 +89,9 @@ export default function Hero({ accent }) {
 
   return (
     <div className="h-full w-full flex flex-col relative">
-      {/* Floating social post cards — desktop only */}
-      <div className="absolute inset-0 pointer-events-none hidden lg:block" aria-hidden>
+      {/* Floating social post cards — smaller + more transparent on mobile so
+          they frame the title without stealing focus. */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden>
         {POSTS.map((p, i) => (
           <PostCard key={i} post={p} accent={accent} delay={1.2 + i * 0.18} />
         ))}
@@ -205,62 +212,74 @@ export default function Hero({ accent }) {
 }
 
 function PostCard({ post, accent, delay }) {
-  const base = {
-    top: post.top,
-    bottom: post.bottom,
-    left: post.left,
-    right: post.right
+  // Responsive positioning via CSS vars: mobile uses `base`, desktop uses `lg`.
+  const b = post.positions.base
+  const l = post.positions.lg
+  const styleVars = {
+    '--top-base': b.top ?? 'auto',
+    '--bottom-base': b.bottom ?? 'auto',
+    '--left-base': b.left ?? 'auto',
+    '--right-base': b.right ?? 'auto',
+    '--top-lg': l.top ?? 'auto',
+    '--bottom-lg': l.bottom ?? 'auto',
+    '--left-lg': l.left ?? 'auto',
+    '--right-lg': l.right ?? 'auto',
+    top: 'var(--top-base)',
+    bottom: 'var(--bottom-base)',
+    left: 'var(--left-base)',
+    right: 'var(--right-base)'
   }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 24, rotate: post.rotate * 1.6, scale: 0.9 }}
-      animate={{ opacity: 0.95, y: 0, rotate: post.rotate, scale: 1 }}
+      animate={{ opacity: 1, y: 0, rotate: post.rotate, scale: 1 }}
       transition={{ duration: 0.9, delay, ease: [0.22, 1, 0.36, 1] }}
-      className="absolute w-[260px] xl:w-[300px] pointer-events-none"
-      style={base}
+      className="hero-post absolute w-[140px] sm:w-[170px] md:w-[210px] lg:w-[260px] xl:w-[300px] pointer-events-none opacity-80 lg:opacity-95"
+      style={styleVars}
     >
       <motion.div
         animate={{ y: [0, -6, 0] }}
         transition={{ duration: 6 + (post.rotate % 3), repeat: Infinity, ease: 'easeInOut' }}
-        className="rounded-2xl p-4 border border-white/15 shadow-2xl backdrop-blur-md"
-        style={{ background: 'rgba(15, 15, 20, 0.55)' }}
+        className="rounded-xl md:rounded-2xl p-2.5 md:p-4 border border-white/15 shadow-2xl backdrop-blur-md"
+        style={{ background: 'rgba(15, 15, 20, 0.6)' }}
       >
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between gap-1">
+          <div className="flex items-center gap-1.5 md:gap-2 min-w-0">
             <div
-              className="h-6 w-6 rounded-full grid place-items-center text-[10px] font-bold"
+              className="h-5 w-5 md:h-6 md:w-6 rounded-full grid place-items-center text-[9px] md:text-[10px] font-bold shrink-0"
               style={{ background: accent, color: '#0b0b10' }}
             >
               {post.handle[1].toUpperCase()}
             </div>
-            <div className="text-xs font-semibold">{post.handle}</div>
+            <div className="text-[10px] md:text-xs font-semibold truncate">{post.handle}</div>
           </div>
-          <div className="text-[9px] tracking-[0.25em] uppercase opacity-60">
+          <div className="text-[8px] md:text-[9px] tracking-[0.25em] uppercase opacity-60 shrink-0">
             {post.platform}
           </div>
         </div>
 
         {post.kind === 'reel' && (
           <div
-            className="mt-3 aspect-[9/12] rounded-lg relative overflow-hidden"
+            className="mt-2 md:mt-3 aspect-[9/12] rounded-md md:rounded-lg relative overflow-hidden"
             style={{
               background: `linear-gradient(135deg, ${accent}33, rgba(0,0,0,0.4))`
             }}
           >
             <div className="absolute inset-0 grid place-items-center">
-              <div className="h-12 w-12 rounded-full bg-white/90 grid place-items-center">
+              <div className="h-8 w-8 md:h-12 md:w-12 rounded-full bg-white/90 grid place-items-center">
                 <div
                   className="w-0 h-0"
                   style={{
-                    borderLeft: '12px solid #0b0b10',
-                    borderTop: '8px solid transparent',
-                    borderBottom: '8px solid transparent',
-                    marginLeft: '3px'
+                    borderLeft: '9px solid #0b0b10',
+                    borderTop: '6px solid transparent',
+                    borderBottom: '6px solid transparent',
+                    marginLeft: '2px'
                   }}
                 />
               </div>
             </div>
-            <div className="absolute bottom-2 left-2 text-[10px] font-semibold">
+            <div className="absolute bottom-1.5 left-1.5 text-[9px] md:text-[10px] font-semibold">
               {post.stat}
             </div>
           </div>
@@ -268,29 +287,29 @@ function PostCard({ post, accent, delay }) {
 
         {post.kind === 'tweet' && (
           <>
-            <div className="mt-3 text-sm leading-snug">{post.caption}</div>
-            <div className="mt-3 text-[10px] opacity-70 tracking-wider">{post.stat}</div>
-          </>
-        )}
-
-        {post.kind === 'tiktok' && (
-          <>
-            <div
-              className="mt-3 aspect-[9/14] rounded-lg relative overflow-hidden"
-              style={{
-                background: `linear-gradient(160deg, ${accent}22, rgba(0,0,0,0.5))`
-              }}
-            >
-              <div className="absolute bottom-2 left-2 right-2">
-                <div className="text-[11px] font-semibold">{post.caption}</div>
-                <div className="mt-1 text-[9px] opacity-80">{post.stat}</div>
-              </div>
+            <div className="mt-2 md:mt-3 text-[11px] md:text-sm leading-snug line-clamp-3 md:line-clamp-none">
+              {post.caption}
+            </div>
+            <div className="mt-2 md:mt-3 text-[9px] md:text-[10px] opacity-70 tracking-wider">
+              {post.stat}
             </div>
           </>
         )}
 
-        {!['reel', 'tweet', 'tiktok'].includes(post.kind) && (
-          <div className="mt-3 text-sm">{post.caption}</div>
+        {post.kind === 'tiktok' && (
+          <div
+            className="mt-2 md:mt-3 aspect-[9/14] rounded-md md:rounded-lg relative overflow-hidden"
+            style={{
+              background: `linear-gradient(160deg, ${accent}22, rgba(0,0,0,0.5))`
+            }}
+          >
+            <div className="absolute bottom-1.5 left-1.5 right-1.5">
+              <div className="text-[10px] md:text-[11px] font-semibold line-clamp-2">
+                {post.caption}
+              </div>
+              <div className="mt-1 text-[8px] md:text-[9px] opacity-80">{post.stat}</div>
+            </div>
+          </div>
         )}
       </motion.div>
     </motion.div>

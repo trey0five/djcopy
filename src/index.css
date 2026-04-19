@@ -29,6 +29,19 @@ html, body, #root {
   overflow: hidden;
 }
 
+/* Hero social post cards — each card supplies two sets of position vars
+   and we swap between them at the lg breakpoint. Keeping this in CSS
+   instead of Tailwind arbitrary classes because tailwind can't mix two
+   different custom properties per viewport cleanly. */
+@media (min-width: 1024px) {
+  .hero-post {
+    top: var(--top-lg) !important;
+    bottom: var(--bottom-lg) !important;
+    left: var(--left-lg) !important;
+    right: var(--right-lg) !important;
+  }
+}
+
 /* Curtain wipe. Pure CSS transform transition so it runs on the compositor
    thread — stays smooth under mobile Safari's scroll pipeline. */
 .section-curtain {
