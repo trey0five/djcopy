@@ -28,8 +28,8 @@ const POSTS = [
   {
     kind: 'reel',
     positions: {
-      base: { top: '10%', right: '2%' },
-      lg: { top: '8%', right: '6%' }
+      base: { top: '16%', right: '2%' },
+      lg: { top: '14%', right: '6%' }
     },
     rotate: 4,
     handle: '@aidenr',
@@ -53,8 +53,8 @@ const POSTS = [
   {
     kind: 'tiktok',
     positions: {
-      base: { top: '22%', left: '2%' },
-      lg: { top: '18%', left: '4%' }
+      base: { top: '26%', left: '2%' },
+      lg: { top: '22%', left: '4%' }
     },
     rotate: -6,
     handle: '@kishigallery',

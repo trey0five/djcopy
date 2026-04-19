@@ -51,7 +51,7 @@ export default function Nav({ containerRef }) {
           <img
             src={`${import.meta.env.BASE_URL}logo-mark.png`}
             alt="DJ Copy"
-            className="h-10 md:h-12 w-auto block"
+            className="h-16 w-auto block"
             style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.4))' }}
           />
         </button>
@@ -127,7 +127,7 @@ export default function Nav({ containerRef }) {
               <img
                 src={`${import.meta.env.BASE_URL}logo-mark.png`}
                 alt="DJ Copy"
-                className="h-10 w-auto block"
+                className="h-14 w-auto block"
               />
               <button
                 type="button"
