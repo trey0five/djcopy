@@ -1,10 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// Hosted under https://trey0five.github.io/djcopy/ so assets must resolve
-// from that subpath. Dev server stays at "/".
-export default defineConfig(({ command }) => ({
+// Hosted on the custom domain dylanjcopy.com (via GitHub Pages CNAME), so
+// assets resolve from the site root instead of the /djcopy/ subpath.
+export default defineConfig({
   plugins: [react()],
-  base: command === 'build' ? '/djcopy/' : '/',
+  base: '/',
   server: { host: true, port: 5173 }
-}))
+})
