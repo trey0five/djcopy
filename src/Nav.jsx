@@ -39,19 +39,20 @@ export default function Nav({ containerRef }) {
   return (
     <>
       <header className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-4 md:px-10 py-3 md:py-5 text-white pointer-events-none">
-        {/* Logo pill — opted out of mix-blend so the brand colours stay true
-            against every section's gradient. */}
+        {/* Bare brand logo — no pill. Opted out of the header's mix-blend
+            so the colours stay true across every section gradient. */}
         <button
           type="button"
           onClick={() => go(0)}
           aria-label="Home"
-          className="pointer-events-auto inline-flex items-center gap-2 rounded-full bg-black/55 backdrop-blur-sm border border-white/15 shadow-lg px-2 py-1.5 md:px-2.5 md:py-2"
+          className="pointer-events-auto inline-flex items-center"
           style={{ mixBlendMode: 'normal' }}
         >
           <img
             src={`${import.meta.env.BASE_URL}logo-mark.png`}
             alt="DJ Copy"
-            className="h-5 md:h-6 w-auto block"
+            className="h-10 md:h-12 w-auto block"
+            style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.4))' }}
           />
         </button>
 
@@ -126,7 +127,7 @@ export default function Nav({ containerRef }) {
               <img
                 src={`${import.meta.env.BASE_URL}logo-mark.png`}
                 alt="DJ Copy"
-                className="h-6 w-auto block"
+                className="h-10 w-auto block"
               />
               <button
                 type="button"
