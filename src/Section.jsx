@@ -4,7 +4,13 @@ import Particles from './Particles'
 
 export default function Section({ data, index, children }) {
   const ref = useRef(null)
+  // Live "is visible" signal — used to pause/resume the particle canvas so
+  // off-screen sections don't chew battery.
   const inView = useInView(ref, { amount: 0.3 })
+  // Latched "has ever been seen" — used for the curtain + content entrance
+  // so they play exactly once per session. Replaying those on every
+  // scroll-back was causing stutter in mobile Safari.
+  const hasEntered = useInView(ref, { amount: 0.3, once: true })
 
   // Alternating diagonal entrance; percentage offsets so it scales with viewport.
   const even = index % 2 === 0
@@ -49,14 +55,14 @@ export default function Section({ data, index, children }) {
         aria-hidden
         className="absolute -top-32 -right-32 h-[380px] w-[380px] md:h-[520px] md:w-[520px] rounded-full blur-3xl opacity-40"
         style={{ background: data.accent }}
-        animate={inView ? { scale: 1 } : { scale: 0.85 }}
+        animate={hasEntered ? { scale: 1 } : { scale: 0.85 }}
         transition={{ duration: 0.7, ease: 'easeOut' }}
       />
       <motion.div
         aria-hidden
         className="absolute -bottom-40 -left-24 h-[320px] w-[320px] md:h-[420px] md:w-[420px] rounded-full blur-3xl opacity-30"
         style={{ background: data.accent }}
-        animate={inView ? { scale: 1 } : { scale: 0.9 }}
+        animate={hasEntered ? { scale: 1 } : { scale: 0.9 }}
         transition={{ duration: 0.8, ease: 'easeOut', delay: 0.1 }}
       />
 
@@ -76,13 +82,15 @@ export default function Section({ data, index, children }) {
         }}
       />
 
-      {/* Diagonal curtain wipe */}
+      {/* Diagonal curtain wipe — fires only on first entry so scrolling back
+          to a section doesn't re-trigger a full-screen transform (which
+          stutters under mobile Safari). */}
       <motion.div
         aria-hidden
         className="absolute inset-0 z-20"
         style={{ background: data.accent }}
         initial={curtainFrom}
-        animate={inView ? curtainTo : curtainFrom}
+        animate={hasEntered ? curtainTo : curtainFrom}
         transition={{ duration: 0.55, ease: [0.77, 0, 0.175, 1] }}
       />
 
@@ -94,7 +102,7 @@ export default function Section({ data, index, children }) {
             : 'justify-center pt-16 md:pt-0'
         } px-4 md:px-14 lg:px-20`}
         initial={contentFrom}
-        animate={inView ? contentTo : contentFrom}
+        animate={hasEntered ? contentTo : contentFrom}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
       >
         {isProject ? (
