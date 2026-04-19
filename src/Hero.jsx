@@ -137,21 +137,45 @@ export default function Hero({ accent }) {
           </span>
         </h1>
 
-        {/* Rotating tagline */}
-        <div className="mt-6 md:mt-10 h-[3.2em] md:h-[2.4em] relative overflow-hidden max-w-4xl">
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={tagIdx}
-              initial={{ y: '60%', opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: '-60%', opacity: 0 }}
-              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute inset-0 font-display font-medium text-xl md:text-3xl lg:text-4xl leading-tight"
+        {/* Rotating tagline. Frosted-glass card on mobile only. The card
+            auto-sizes to the current sentence via an invisible sizer +
+            framer-motion's layout animation, so short lines get a small
+            card and long ones get a larger one. */}
+        <motion.div
+          layout
+          transition={{ layout: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } }}
+          className="mt-6 md:mt-10 max-w-4xl self-start rounded-2xl border border-white/15 bg-white/10 backdrop-blur-md shadow-lg md:bg-transparent md:border-transparent md:backdrop-blur-none md:rounded-none md:shadow-none"
+        >
+          <div className="relative overflow-hidden px-4 py-3 md:p-0">
+            {/* Invisible sizer — gives the card its height equal to the
+                current tagline's natural height, so the card shrinks and
+                grows with each sentence. */}
+            <p
+              aria-hidden
+              className="invisible font-display font-bold text-xl md:text-3xl lg:text-4xl leading-snug"
+              style={{ paddingBottom: '0.18em' }}
             >
               {TAGLINES[tagIdx]}
-            </motion.p>
-          </AnimatePresence>
-        </div>
+            </p>
+            <AnimatePresence initial={false}>
+              <motion.p
+                key={tagIdx}
+                initial={{ y: '100%', opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: '-100%', opacity: 0 }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute inset-0 px-4 py-3 md:p-0 font-display font-bold text-xl md:text-3xl lg:text-4xl leading-snug"
+                style={{
+                  color: accent,
+                  textShadow: `0 0 28px ${accent}66, 0 3px 14px rgba(0,0,0,0.3)`,
+                  paddingBottom: '0.18em'
+                }}
+              >
+                {TAGLINES[tagIdx]}
+              </motion.p>
+            </AnimatePresence>
+          </div>
+        </motion.div>
 
         {/* CTA */}
         <motion.div
