@@ -29,7 +29,7 @@ const POSTS = [
     kind: 'reel',
     positions: {
       base: { top: '28%', right: '2%' },
-      lg: { top: '14%', right: '6%' }
+      lg: { top: '10%', right: '4%' }
     },
     rotate: 4,
     handle: '@aidenr',
@@ -42,7 +42,7 @@ const POSTS = [
     kind: 'tweet',
     positions: {
       base: { bottom: '22%', right: '2%' },
-      lg: { bottom: '18%', right: '10%' }
+      lg: { bottom: '10%', left: '6%' }
     },
     rotate: -3,
     handle: '@dj_copy',
@@ -54,7 +54,7 @@ const POSTS = [
     kind: 'tiktok',
     positions: {
       base: { top: '38%', left: '2%' },
-      lg: { top: '22%', left: '4%' }
+      lg: { top: '52%', right: '4%' }
     },
     rotate: -6,
     handle: '@kishigallery',
@@ -110,10 +110,10 @@ export default function Hero({ accent }) {
         Social studio · since 2024
       </motion.div>
 
-      {/* Title — letter-by-letter reveal. Anchored to top on mobile so the
-          title clears the floating Reel / TikTok post cards that sit in
-          the upper-middle zone; centered on desktop where there's room. */}
-      <div className="mt-3 md:mt-4 flex-1 flex flex-col justify-start md:justify-center relative z-10">
+      {/* Title — letter-by-letter reveal. Anchored to top on both sizes so
+          the title sits above the floating Reel / TikTok post cards
+          instead of being sandwiched by them. */}
+      <div className="mt-3 md:mt-4 flex-1 flex flex-col justify-start relative z-10">
         <h1
           aria-label={TITLE}
           className="font-display font-black leading-[0.85] tracking-tight select-none"
