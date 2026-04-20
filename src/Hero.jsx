@@ -29,7 +29,7 @@ const POSTS = [
     kind: 'reel',
     positions: {
       base: { top: '28%', right: '2%' },
-      lg: { top: '10%', right: '4%' }
+      lg: { top: '8%', right: '4%' }
     },
     rotate: 4,
     handle: '@aidenr',
@@ -42,7 +42,7 @@ const POSTS = [
     kind: 'tweet',
     positions: {
       base: { bottom: '22%', right: '2%' },
-      lg: { bottom: '10%', left: '6%' }
+      lg: { bottom: '12%', right: '8%' }
     },
     rotate: -3,
     handle: '@dj_copy',
@@ -54,7 +54,7 @@ const POSTS = [
     kind: 'tiktok',
     positions: {
       base: { top: '38%', left: '2%' },
-      lg: { top: '52%', right: '4%' }
+      lg: { top: '10%', right: '26%' }
     },
     rotate: -6,
     handle: '@kishigallery',
